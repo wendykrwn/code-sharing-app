@@ -5,6 +5,7 @@ import { SetStateAction, useEffect, useRef, useState } from "react"
 import SelectInput from "./selectInput";
 import Button from "./button";
 import shareIcon from "../public/Share.svg"
+import ShareLink from "./shareLink";
 
 type MonacoEditor = Parameters<OnMount>[0];
 const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLanguage?:string}) => {
@@ -45,12 +46,6 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
     const changeTheme = (e: { target: { value: SetStateAction<string>; }; }) => {
         setTheme(e.target.value)
     }
-    const handleCopy = async () => {
-        if (shareLink) {
-          await navigator.clipboard.writeText(shareLink);
-          alert("Lien copié dans le presse-papiers !");
-        }
-      };
     
     return (
         <div className="bg-white h-[80vh] w-5xl m-auto rounded-2xl py-5">
@@ -76,7 +71,8 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                 />
             <div>
                 {
-                    shareLink && <p onClick={handleCopy}>{shareLink}</p>
+                    shareLink && 
+                    <ShareLink link={shareLink}/>
                 }
                 <Button
                     text="Share"
