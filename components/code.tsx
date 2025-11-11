@@ -2,9 +2,10 @@
 import { defaultHtmlCode } from "@/utils/codeExample"
 import { Editor, OnMount } from "@monaco-editor/react"
 import { SetStateAction, useEffect, useRef, useState } from "react"
+import SelectInput from "./selectInput";
 
 type MonacoEditor = Parameters<OnMount>[0];
-const Code = ({defaultValue,defaultLanguage}:{defaultValue:string,defaultLanguage:string}) => {
+const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLanguage?:string}) => {
     const [theme,setTheme] = useState('light')
     const [language, setLanguage] = useState('html')
     const [defaultEditorValue, setDefaultEditorValue] = useState('')
@@ -66,15 +67,14 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue:string,defaultLanguag
                 />
             </div>
             <div className="">
-                <select onChange={changeLanguage} className="bg-[#CED6E1] rounded-full outline-0 py-1 pl-2 m-auto cursor-pointer " name="languages" id="languages">
-                    <option value="javascript">JS</option>
-                    <option value="css">CSS</option>
-                    <option value="html">HTML</option>
-                </select>
-                <select onChange={changeTheme} className="bg-[#CED6E1] rounded-full outline-0 py-1 pl-2 m-auto cursor-pointer" name="themes" id="themes">
-                    <option value="light">Light</option>
-                    <option value="vs-dark">Dark</option>
-                </select>
+                <SelectInput 
+                    handleSelectedChange={changeLanguage}
+                    options={['html','css','javascript']}
+                />
+                <SelectInput 
+                    handleSelectedChange={changeTheme}
+                    options={['light','vs-dark']}
+                />
             <div>
                 {
                     shareLink && <p onClick={handleCopy}>{shareLink}</p>
