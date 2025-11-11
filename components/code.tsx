@@ -6,6 +6,7 @@ type MonacoEditor = Parameters<OnMount>[0];
 const Code = () => {
     const [theme,setTheme] = useState('light')
     const [language, setLanguage] = useState('html')
+    const [value, setValue] = useState('')
     const editorRef = useRef<MonacoEditor | null>(null);
 
 
@@ -15,9 +16,13 @@ const Code = () => {
     }
     const getValue = () => {
         if(editorRef.current){
-            return editorRef.current.getValue()
+            const editorValue = editorRef.current.getValue()
+            console.log({editorValue})
+            setValue(editorValue)
         }
-        else null
+        else {
+            setValue('')
+        }
     }
     const changeLanguage = (e: { target: { value: SetStateAction<string>; }; })=> {
         setLanguage(e.target.value)
@@ -37,18 +42,17 @@ const Code = () => {
                 />
             </div>
             <div className="">
-                {/* <label htmlFor="languages">Choose a pet:</label> */}
-                <select onChange={changeLanguage} className="bg-[#CED6E1] rounded-full outline-0 py-1 pl-2 m-auto " name="languages" id="languages">
-                    <option value={language}>{language.toUpperCase()}</option>
+                <select onChange={changeLanguage} className="bg-[#CED6E1] rounded-full outline-0 py-1 pl-2 m-auto cursor-pointer " name="languages" id="languages">
                     <option value="javascript">JS</option>
                     <option value="css">CSS</option>
                     <option value="html">HTML</option>
                 </select>
-                <select onChange={changeTheme} className="bg-[#CED6E1] rounded-full outline-0 py-1 pl-2 m-auto " name="themes" id="themes">
-                    <option value={theme}>{theme}</option>
+                <select onChange={changeTheme} className="bg-[#CED6E1] rounded-full outline-0 py-1 pl-2 m-auto cursor-pointer" name="themes" id="themes">
                     <option value="light">Light</option>
-                    <option value="vs-dark">Vs-dark</option>
+                    <option value="vs-dark">Dark</option>
                 </select>
+
+                <button onClick={getValue} className="bg-[#CED6E1] rounded-full outline-0 py-1 px-3 m-auto cursor-pointer">Share</button>
             </div>
         </div>
     )
