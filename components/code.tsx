@@ -58,30 +58,31 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                     onChange={(value)=>{if(value)setValue(value)}}
                 />
             </div>
-            <div className="">
-                <SelectInput 
-                    currentValue={language}
-                    handleSelectedChange={changeLanguage}
-                    options={['html','css','javascript']}
-                />
-                <SelectInput 
-                    currentValue={theme}
-                    handleSelectedChange={changeTheme}
-                    options={['light','vs-dark']}
-                />
-            <div>
-                {
-                    shareLink && 
-                    <ShareLink link={shareLink}/>
-                }
-                <Button
-                    text="Share"
-                    icon={shareIcon}
-                    handleClick={handleShare}
-                    disabled={defaultValue==value}
-                />
-            </div>
-         
+            <div className="flex items-center justify-between px-4">
+                <div className="flex gap-x-2">
+                    <SelectInput 
+                        currentValue={language}
+                        handleSelectedChange={changeLanguage}
+                        options={['html','css','javascript']}
+                        />
+                    <SelectInput 
+                        currentValue={theme}
+                        handleSelectedChange={changeTheme}
+                        options={['light','vs-dark']}
+                        />
+                </div>
+                <div className="flex gap-x-3">
+                    {
+                        shareLink && 
+                        <ShareLink link={shareLink}/>
+                    }
+                    <Button
+                        text="Share"
+                        icon={shareIcon}
+                        handleClick={handleShare}
+                        disabled={defaultValue==value}
+                    />
+                </div>
             </div>
         </div>
     )
