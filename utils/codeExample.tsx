@@ -15,5 +15,4 @@ export const defaultHtmlCode = `<html>
     <h1>Heading No.1</h1>
     <input disabled type="button" value="Click me" />
 </body>
-</html>
-`
+</html>`
