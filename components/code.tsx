@@ -3,33 +3,30 @@ import { defaultHtmlCode } from "@/utils/codeExample"
 import { Editor, OnMount } from "@monaco-editor/react"
 import { SetStateAction, useEffect, useRef, useState } from "react"
 import SelectInput from "./selectInput";
+import Button from "./button";
+import shareIcon from "../public/Share.svg"
 
 type MonacoEditor = Parameters<OnMount>[0];
 const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLanguage?:string}) => {
     const [theme,setTheme] = useState('light')
     const [language, setLanguage] = useState('html')
-    const [defaultEditorValue, setDefaultEditorValue] = useState('')
     const [value, setValue] = useState('')
     const [shareLink, setShareLink] = useState('')
 
     const editorRef = useRef<MonacoEditor | null>(null);
 
-    useEffect(()=>{
-        if(!defaultValue){
-            setDefaultEditorValue(defaultHtmlCode)
-        }else{
-            setDefaultEditorValue(defaultValue)
-        }
-    },[])
-
     const handleEditorDidMount : OnMount = (editor,monaco) => {
         editorRef.current = editor;
+        setValue(editorRef.current.getValue())
+        if(defaultLanguage){
+            setLanguage(defaultLanguage)
+        }
         console.log("Langages dispo :", monaco.languages.getLanguages());
     }
     const handleShare = async () => {
         if(!editorRef.current) return null
         const content = editorRef.current.getValue();
-
+        
         const res = await fetch("/api/snippets", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -59,19 +56,21 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
         <div className="bg-white h-[80vh] w-5xl m-auto rounded-2xl py-5">
             <div className="h-[90%]">
                 <Editor 
-                    defaultLanguage="html" 
-                    defaultValue={defaultEditorValue} 
+                    defaultValue={defaultValue || defaultHtmlCode} 
                     onMount={handleEditorDidMount}
                     language={language}
                     theme={theme}
+                    onChange={(value)=>{if(value)setValue(value)}}
                 />
             </div>
             <div className="">
                 <SelectInput 
+                    currentValue={language}
                     handleSelectedChange={changeLanguage}
                     options={['html','css','javascript']}
                 />
                 <SelectInput 
+                    currentValue={theme}
                     handleSelectedChange={changeTheme}
                     options={['light','vs-dark']}
                 />
@@ -79,7 +78,12 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                 {
                     shareLink && <p onClick={handleCopy}>{shareLink}</p>
                 }
-                <button onClick={handleShare} className="bg-[#CED6E1] rounded-full outline-0 py-1 px-3 m-auto cursor-pointer hover:bg-[#afb6c0] active:scale-90 transition duration-300 ease-in-out">Share</button>
+                <Button
+                    text="Share"
+                    icon={shareIcon}
+                    handleClick={handleShare}
+                    disabled={defaultValue==value}
+                />
             </div>
          
             </div>
