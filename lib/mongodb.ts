@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, models, model } from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 
@@ -19,13 +19,23 @@ export async function connectDB() {
   }
 }
 
-const CodeSchema = new mongoose.Schema(
-  {
-    content: String,
-    language: String,
-  },
-  { timestamps: true }
-);
+export interface CodeDocument extends Document {
+    uuid: string;
+    content: string;
+    language: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+  
+const CodeSchema = new Schema<CodeDocument>(
+    {
+      uuid: { type: String, required: true, unique: true },
+      content: { type: String, required: true },
+      language: { type: String, default: "plaintext" },
+    },
+    { timestamps: true }
+  );
 
 export const CodeModel =
-  mongoose.models.Code || mongoose.model("Code", CodeSchema);
+models.Code || model<CodeDocument>("Code", CodeSchema);
