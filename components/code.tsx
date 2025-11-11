@@ -52,7 +52,7 @@ const Code = () => {
                     <option value="vs-dark">Dark</option>
                 </select>
 
-                <button onClick={getValue} className="bg-[#CED6E1] rounded-full outline-0 py-1 px-3 m-auto cursor-pointer">Share</button>
+                <button onClick={getValue} className="bg-[#CED6E1] rounded-full outline-0 py-1 px-3 m-auto cursor-pointer hover:bg-[#afb6c0] active:scale-90 transition duration-300 ease-in-out">Share</button>
             </div>
         </div>
     )
