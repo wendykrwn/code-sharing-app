@@ -1,23 +1,34 @@
 "use client"
 import { defaultHtmlCode } from "@/utils/codeExample"
 import { Editor, OnMount } from "@monaco-editor/react"
-import { SetStateAction, useRef, useState } from "react"
+import { SetStateAction, useEffect, useRef, useState } from "react"
 import SelectInput from "./selectInput";
 import Button from "./button";
 import shareIcon from "../public/Share.svg"
 import ShareLink from "./shareLink";
 import { useRouter } from "next/navigation";
+import ThemeToggle from "./toggleTheme";
+import { useTheme } from "@/store/ThemeContext";
 
 type MonacoEditor = Parameters<OnMount>[0];
 const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLanguage?:string}) => {
-    const [theme,setTheme] = useState('light')
+    const [themeEditor,setThemeEditor] = useState('light')
     const [language, setLanguage] = useState('html')
     const [disabledBtn, setDisabledBtn] = useState(false)
     const [shareLink, setShareLink] = useState('')
     const router = useRouter()
+    const { theme, setTheme } = useTheme();
 
     const editorRef = useRef<MonacoEditor | null>(null);
 
+    useEffect(()=>{
+        if(themeEditor=='light'){
+            setTheme('light')
+        }
+        else if(themeEditor=='vs-dark'){
+            setTheme('dark')
+        }
+    },[themeEditor])
     const handleEditorDidMount : OnMount = (editor,monaco) => {
         editorRef.current = editor;
         // setValue(editorRef.current.getValue())
@@ -47,17 +58,17 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
         setLanguage(e.target.value)
     }
     const changeTheme = (e: { target: { value: SetStateAction<string>; }; }) => {
-        setTheme(e.target.value)
+        setThemeEditor(e.target.value)
     }
     
     return (
-        <div className="bg-white shadow-2xl h-[720px] md:w-[880px] rounded-2xl pt-6 pb-4">
+        <div className="bg-white dark:bg-[#1E1E1E] shadow-2xl h-[720px] md:w-[880px] rounded-2xl pt-6 pb-4">
             <div className="h-[90%]">
                 <Editor 
                     defaultValue={defaultValue || defaultHtmlCode} 
                     onMount={handleEditorDidMount}
                     language={language}
-                    theme={theme}
+                    theme={themeEditor}
                     onChange={()=>{()=> setDisabledBtn(true)}}
                 />
             </div>
@@ -69,7 +80,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                         options={['html','css','javascript']}
                         />
                     <SelectInput 
-                        currentValue={theme}
+                        currentValue={themeEditor}
                         handleSelectedChange={changeTheme}
                         options={['light','vs-dark']}
                         />
