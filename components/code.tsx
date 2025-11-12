@@ -26,12 +26,11 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
             setTheme('dark')
         }
     },[themeEditor])
-    const handleEditorDidMount : OnMount = (editor,monaco) => {
+    const handleEditorDidMount : OnMount = (editor) => {
         editorRef.current = editor;
         if(defaultLanguage){
             setLanguage(defaultLanguage)
         }
-        console.log("Langages dispo :", monaco.languages.getLanguages());
     }
     const handleShare = async () => {
         if(!editorRef.current) return null
@@ -65,7 +64,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                     onMount={handleEditorDidMount}
                     language={language}
                     theme={themeEditor}
-                    onChange={()=>{()=> setDisabledBtn(true)}}
+                    onChange={()=>{ setDisabledBtn(false)}}
                 />
             </div>
             <div className="flex items-center justify-between px-4">
@@ -73,7 +72,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                     <SelectInput 
                         currentValue={language}
                         handleSelectedChange={changeLanguage}
-                        options={['html','css','javascript']}
+                        options={['html','css','javascript','java','json']}
                         />
                     <SelectInput 
                         currentValue={themeEditor}
