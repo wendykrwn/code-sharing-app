@@ -16,6 +16,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
     const [disabledBtn, setDisabledBtn] = useState(false)
     const [shareLink, setShareLink] = useState('')
     const { theme, setTheme } = useTheme();
+    const [isLoading, setIsloading] = useState(false)
 
     const editorRef = useRef<MonacoEditor | null>(null);
 
@@ -36,7 +37,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
     const handleShare = async () => {
         if(!editorRef.current) return null
         const content = editorRef.current.getValue();
-        
+        setIsloading(true)
         const res = await fetch("/api/snippets", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -47,6 +48,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
 
         const baseUrl = `${window.location.origin}`
 
+        setIsloading(false)
         setShareLink(`${baseUrl}/${data.id}`);
         setDisabledBtn(true)
     }
@@ -91,6 +93,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                         icon={shareIcon}
                         handleClick={handleShare}
                         disabled={disabledBtn}
+                        isLoading={isLoading}
                     />
                 </div>
             </div>
