@@ -1,24 +1,26 @@
 "use client"
 import { defaultHtmlCode } from "@/utils/codeExample"
 import { Editor, OnMount } from "@monaco-editor/react"
-import { SetStateAction, useEffect, useRef, useState } from "react"
+import { SetStateAction, useRef, useState } from "react"
 import SelectInput from "./selectInput";
 import Button from "./button";
 import shareIcon from "../public/Share.svg"
 import ShareLink from "./shareLink";
+import { useRouter } from "next/navigation";
 
 type MonacoEditor = Parameters<OnMount>[0];
 const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLanguage?:string}) => {
     const [theme,setTheme] = useState('light')
     const [language, setLanguage] = useState('html')
-    const [value, setValue] = useState('')
+    const [disabledBtn, setDisabledBtn] = useState(false)
     const [shareLink, setShareLink] = useState('')
+    const router = useRouter()
 
     const editorRef = useRef<MonacoEditor | null>(null);
 
     const handleEditorDidMount : OnMount = (editor,monaco) => {
         editorRef.current = editor;
-        setValue(editorRef.current.getValue())
+        // setValue(editorRef.current.getValue())
         if(defaultLanguage){
             setLanguage(defaultLanguage)
         }
@@ -39,6 +41,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
         setShareLink(`${baseUrl}/${data.id}`);
+        setDisabledBtn(true)
     }
     const changeLanguage = (e: { target: { value: SetStateAction<string>; }; })=> {
         setLanguage(e.target.value)
@@ -55,7 +58,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                     onMount={handleEditorDidMount}
                     language={language}
                     theme={theme}
-                    onChange={(value)=>{if(value)setValue(value)}}
+                    onChange={()=>{()=> setDisabledBtn(true)}}
                 />
             </div>
             <div className="flex items-center justify-between px-4">
@@ -80,7 +83,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
                         text="Share"
                         icon={shareIcon}
                         handleClick={handleShare}
-                        disabled={defaultValue==value}
+                        disabled={disabledBtn}
                     />
                 </div>
             </div>
