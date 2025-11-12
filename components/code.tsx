@@ -6,8 +6,6 @@ import SelectInput from "./selectInput";
 import Button from "./button";
 import shareIcon from "../public/Share.svg"
 import ShareLink from "./shareLink";
-import { useRouter } from "next/navigation";
-import ThemeToggle from "./toggleTheme";
 import { useTheme } from "@/store/ThemeContext";
 
 type MonacoEditor = Parameters<OnMount>[0];
@@ -16,7 +14,6 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
     const [language, setLanguage] = useState('html')
     const [disabledBtn, setDisabledBtn] = useState(false)
     const [shareLink, setShareLink] = useState('')
-    const router = useRouter()
     const { theme, setTheme } = useTheme();
 
     const editorRef = useRef<MonacoEditor | null>(null);
@@ -31,7 +28,6 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
     },[themeEditor])
     const handleEditorDidMount : OnMount = (editor,monaco) => {
         editorRef.current = editor;
-        // setValue(editorRef.current.getValue())
         if(defaultLanguage){
             setLanguage(defaultLanguage)
         }
@@ -62,7 +58,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
     }
     
     return (
-        <div className="bg-white dark:bg-[#1E1E1E] shadow-2xl h-[720px] md:w-[880px] rounded-2xl pt-6 pb-4">
+        <div className="bg-white dark:bg-[#1E1E1E] shadow-2xl h-[720px] w-full md:max-w-[880Px] rounded-2xl pt-6 pb-4">
             <div className="h-[90%]">
                 <Editor 
                     defaultValue={defaultValue || defaultHtmlCode} 

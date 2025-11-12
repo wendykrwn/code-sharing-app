@@ -19,7 +19,7 @@ export default function RootLayout({
         className={` antialiased`}
       >  
       <ThemeProvider>
-        <main className="min-h-screen w-full flex flex-col items-center pb-36 ">
+        <main className="min-h-screen w-full flex flex-col items-center pb-36 px-4">
             <Header/>
             {children}
           </main>
