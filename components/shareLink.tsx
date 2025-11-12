@@ -8,7 +8,7 @@ const ShareLink = ({link}:{link:string}) => {
         alert("Lien copié dans le presse-papiers !");
     };
     return (
-        <div className={"flex items-center gap-x-3 text-[#364153] dark:text[#CED6E1] cursor-pointer hover:text-[#364153]/60"} onClick={handleCopy}>
+        <div className={"flex items-center gap-x-3 text-[#6C707E] dark:text[#CED6E1] cursor-pointer hover:text-[#364153]/60"} onClick={handleCopy}>
             <Image src={linkIcon} alt={linkIcon}/>
             <p>.../{idLink}</p>
         </div>
