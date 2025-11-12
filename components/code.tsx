@@ -48,7 +48,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
     }
     
     return (
-        <div className="bg-white h-[80vh] w-5xl m-auto rounded-2xl py-5">
+        <div className="bg-white shadow-2xl h-[720px] md:w-[880px] rounded-2xl pt-6 pb-4">
             <div className="h-[90%]">
                 <Editor 
                     defaultValue={defaultValue || defaultHtmlCode} 

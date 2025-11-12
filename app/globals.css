@@ -30,4 +30,6 @@ body {
 
 main {
   background-image: url("/Hero-Background-notecode@2x.png");
+  background-repeat: no-repeat;
+  background-size: contain;
 }
