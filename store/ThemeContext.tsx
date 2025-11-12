@@ -36,6 +36,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("theme", theme);
   }, [theme,mounted]);
 
+  if (!mounted || !theme) return null; 
+  
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
