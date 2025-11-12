@@ -8,6 +8,7 @@ import shareIcon from "../public/Share.svg"
 import ShareLink from "./shareLink";
 import { useTheme } from "@/store/ThemeContext";
 
+
 type MonacoEditor = Parameters<OnMount>[0];
 const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLanguage?:string}) => {
     const [themeEditor,setThemeEditor] = useState('light')
@@ -44,7 +45,7 @@ const Code = ({defaultValue,defaultLanguage}:{defaultValue?:string,defaultLangua
         
         const data = await res.json();
 
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+        const baseUrl = `${window.location.origin}`
 
         setShareLink(`${baseUrl}/${data.id}`);
         setDisabledBtn(true)
